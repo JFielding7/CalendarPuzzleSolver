@@ -21,27 +21,33 @@ void decode(board puzzle_board) {
 
 void display_piece_key(puzzle_piece* pieces) {
     cout << "Piece Key: \n\n";
+    const char* colors[PIECE_COUNT + 2] = PIECE_COLORS;
     for (int i = 0; i < PIECE_COUNT; i++) {
         for (int r = 0; r < pieces[i].height; r++) {
             for (int c = 0; c < pieces[i].width; c++) {
-                if (pieces[i].piece_shape >> (r * BOARD_HEIGHT + c) & 1) {
-                    printf("%c", i + 'A');
-                }
-                else cout << " ";
+                if (pieces[i].piece_shape >> (r * BOARD_HEIGHT + c) & 1) cout << colors[i];
+                else cout << RESET;
+                cout << "  ";
             }
-            cout << "\n";
+            cout << RESET << "\n";
         }
         cout << "\n";
     }
 }
 
 void decode_solution(const char* solution_board) {
+    cout << "Solution:\n\n|--------------|\n";
+    const char* colors[PIECE_COUNT + 2] = PIECE_COLORS;
     for (int r = 0; r < BOARD_HEIGHT; r++) {
+        cout << "|";
         for (int c = 0; c < BOARD_WIDTH; c++) {
-            cout << solution_board[r * BOARD_WIDTH + c] << " ";
+            char piece = solution_board[r * BOARD_WIDTH + c];
+            cout << colors[solution_board[r * BOARD_WIDTH + c]];
+            cout << "  " << RESET;
         }
-        cout << "\n";
+        cout << "|\n";
     }
+    cout << "|--------------|\n";
 }
 
 void reflect_piece(puzzle_piece* piece, puzzle_piece* reflected_piece) {
@@ -81,7 +87,7 @@ vector<puzzle_piece> get_rotations_and_reflections(puzzle_piece piece) {
 
 void place_piece(board location, int piece_idx, char* solution_board) {
     for (int i = 0; i < BOARD_WIDTH * BOARD_HEIGHT; i++) {
-        if ((1lu << i) & location) solution_board[i] = (char) (piece_idx + 'A');
+        if ((1lu << i) & location) solution_board[i] = (char) piece_idx;
     }
 }
 
@@ -176,7 +182,9 @@ int main(int argc, char* argv[]) {
     int* pos_ptr = &pos;
 
     char* solution_board = (char*) malloc(BOARD_WIDTH * BOARD_HEIGHT);
-    for (int i = 0; i < BOARD_WIDTH * BOARD_HEIGHT; i++) solution_board[i] = '-';
+    for (int i = 0; i < BOARD_WIDTH * BOARD_HEIGHT; i++) solution_board[i] = 8;
+    solution_board[6] = solution_board[13] = 9;
+    for (int i = 45; i < 49; i++) solution_board[i] = 9;
 
     clock_t start = clock();
     solve(starting_board, solution_board, pieces, 0, pos_ptr);

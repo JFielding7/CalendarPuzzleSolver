@@ -25,6 +25,19 @@
                 {.piece_shape = 0b100001111, .width = 4, .height = 2},\
                 {.piece_shape = 0b10001111, .width = 4, .height = 2}};
 
+#define RESET    "\033[0m"
+#define DARK_RED "\033[41m"
+#define YELLOW   "\033[43m"
+#define RED      "\033[101m"
+#define GREEN    "\033[102m"
+#define ORANGE   "\033[103m"
+#define BLUE     "\033[104m"
+#define MAGENTA  "\033[105m"
+#define CYAN     "\033[106m"
+#define WHITE    "\033[107m"
+
+#define PIECE_COLORS {DARK_RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, ORANGE, RED, RESET, WHITE};
+
 #define JANUARY 0b1
 #define FEBRUARY 0b10;
 #define MARCH 0b100;
